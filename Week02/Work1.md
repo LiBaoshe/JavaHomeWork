@@ -1,4 +1,4 @@
-# 默认垃圾收集器
+## 默认参数
 [GC (Allocation Failure) [PSYoungGen: 78512K->22201K(116736K)] 379873K->342485K(466432K), 0.0042620 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
 [Full GC (Ergonomics) [PSYoungGen: 22201K->0K(116736K)] [ParOldGen: 320284K->291491K(349696K)] 342485K->291491K(466432K), [Metaspace: 3362K->3362K(1056768K)], 0.0286482 secs] [Times: user=0.41 sys=0.00, real=0.03 secs] 
 执行结束!共生成对象次数:10051
@@ -12,21 +12,23 @@ Heap
  Metaspace       used 3436K, capacity 4500K, committed 4864K, reserved 1056768K
   class space    used 373K, capacity 388K, committed 512K, reserved 1048576K
 
-# -XX:+UseSerialGC -XX:+PrintGCDetails
-[GC (Allocation Failure) [PSYoungGen: 116521K->37992K(116736K)] 375563K->334174K(466432K), 0.0075725 secs] [Times: user=0.09 sys=0.11, real=0.01 secs] 
-[Full GC (Ergonomics) [PSYoungGen: 37992K->0K(116736K)] [ParOldGen: 296181K->241286K(349696K)] 334174K->241286K(466432K), [Metaspace: 3362K->3362K(1056768K)], 0.0262518 secs] [Times: user=0.20 sys=0.02, real=0.03 secs] 
-执行结束!共生成对象次数:13249
+## -XX:+UseSerialGC -XX:+PrintGCDetails
+[GC (Allocation Failure) [DefNew: 139776K->139776K(157248K), 0.0000092 secs][Tenured: 337884K->349307K(349568K), 0.0347790 secs] 477660K->357769K(506816K), [Metaspace: 3500K->3500K(1056768K)], 0.0348273 secs] [Times: user=0.05 sys=0.00, real=0.04 secs] 
+[Full GC (Allocation Failure) [Tenured: 349307K->349213K(349568K), 0.0380163 secs] 506316K->368780K(506816K), [Metaspace: 3867K->3867K(1056768K)], 0.0380525 secs] [Times: user=0.03 sys=0.00, real=0.04 secs] 
+执行结束!共生成对象次数:11970
 Heap
- def new generation   total 157248K, used 80797K [0x00000000e0000000, 0x00000000eaaa0000, 0x00000000eaaa0000)
-  eden space 139776K,  57% used [0x00000000e0000000, 0x00000000e4ee7540, 0x00000000e8880000)
-  from space 17472K,   0% used [0x00000000e8880000, 0x00000000e8880000, 0x00000000e9990000)
-  to   space 17472K,   0% used [0x00000000e9990000, 0x00000000e9990000, 0x00000000eaaa0000)
- tenured generation   total 349568K, used 349033K [0x00000000eaaa0000, 0x0000000100000000, 0x0000000100000000)
-   the space 349568K,  99% used [0x00000000eaaa0000, 0x00000000fff7a490, 0x00000000fff7a600, 0x0000000100000000)
+ def new generation   total 157248K, used 24252K [0x00000000e0000000, 0x00000000eaaa0000, 0x00000000eaaa0000)
+  eden space 139776K,  17% used [0x00000000e0000000, 0x00000000e17af100, 0x00000000e8880000)
+  from space 17472K,   0% used [0x00000000e9990000, 0x00000000e9990000, 0x00000000eaaa0000)
+  to   space 17472K,   0% used [0x00000000e8880000, 0x00000000e8880000, 0x00000000e9990000)
+ tenured generation   total 349568K, used 349213K [0x00000000eaaa0000, 0x0000000100000000, 0x0000000100000000)
+   the space 349568K,  99% used [0x00000000eaaa0000, 0x00000000fffa77c0, 0x00000000fffa7800, 0x0000000100000000)
  Metaspace       used 3873K, capacity 4572K, committed 4864K, reserved 1056768K
   class space    used 429K, capacity 460K, committed 512K, reserved 1048576K
 
-# -XX:+UseParNewGC -XX:+PrintGCDetails
+## -XX:+UseParNewGC -XX:+PrintGCDetails
+Java HotSpot(TM) 64-Bit Server VM warning: Using the ParNew young collector with the Serial old collector is deprecated and will likely be removed in a future release
+
 [GC (Allocation Failure) [ParNew: 139776K->139776K(157248K), 0.0000106 secs][Tenured: 348364K->349438K(349568K), 0.0386435 secs] 488140K->356860K(506816K), [Metaspace: 3362K->3362K(1056768K)], 0.0386955 secs] [Times: user=0.03 sys=0.00, real=0.04 secs] 
 [Full GC (Allocation Failure) [Tenured: 349438K->345789K(349568K), 0.0474081 secs] 506568K->345789K(506816K), [Metaspace: 3362K->3362K(1056768K)], 0.0474471 secs] [Times: user=0.05 sys=0.00, real=0.05 secs] 
 执行结束!共生成对象次数:11832
@@ -40,7 +42,7 @@ Heap
  Metaspace       used 3775K, capacity 4540K, committed 4864K, reserved 1056768K
   class space    used 420K, capacity 428K, committed 512K, reserved 1048576K
   
-# -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails
+## -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails
 [GC (Allocation Failure) [ParNew: 156499K->156499K(157248K), 0.0000141 secs][CMS: 348985K->349319K(349568K), 0.0522025 secs] 505484K->372981K(506816K), [Metaspace: 3362K->3362K(1056768K)], 0.0522606 secs] [Times: user=0.06 sys=0.00, real=0.05 secs] 
 [GC (CMS Initial Mark) [1 CMS-initial-mark: 349319K(349568K)] 373744K(506816K), 0.0002173 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
 [CMS-concurrent-mark-start]
@@ -67,7 +69,7 @@ Heap
  Metaspace       used 3867K, capacity 4572K, committed 4864K, reserved 1056768K
   class space    used 428K, capacity 460K, committed 512K, reserved 1048576K
 
-# -XX:+UseG1GC -XX:+PrintGC
+## -XX:+UseG1GC -XX:+PrintGC
 [GC pause (G1 Evacuation Pause) (young) 373M->348M(512M), 0.0017900 secs]
 [GC pause (G1 Humongous Allocation) (young) (initial-mark) 351M->348M(512M), 0.0009615 secs]
 [GC concurrent-root-region-scan-start]
