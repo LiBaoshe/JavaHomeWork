@@ -2,7 +2,7 @@
 
 ### 串行垃圾收集器 Serial + SerialOld
 开启参数：-XX:+UseSerialGC  
-日志显示：DefNew + Tenured
+日志显示：DefNew + Tenured  
 应用场景：简单高效（与其他收集器的单线程相比），对于限定单个CPU的环境来说，Serial收集器没有线程交互（切换）开销，可以获得最高的单线程收集效率。
 
 ### 并行垃圾收集器 ParNew（Serial 的多线程版）
@@ -26,14 +26,14 @@ CMS六个过程：1.初始标记（需STW）、2.并发标记、3.并发预清�
 ### G1并发垃圾收集器（JDK9 默认方式）
 开启参数：-XX:+UseG1GC  
 日志显示：与前面的显示都不一样：  
-  [Full GC (Allocation Failure)  421M->351M(512M), 0.0360324 secs]  
-  [GC pause (G1 Humongous Allocation) (young) (initial-mark) 358M->351M(512M), 0.0009876 secs]  
-  [GC concurrent-root-region-scan-start]  
-  [GC concurrent-root-region-scan-end, 0.0000779 secs]  
-  [GC concurrent-mark-start]  
-  [GC concurrent-mark-end, 0.0011469 secs]  
-  [GC remark, 0.0009199 secs]  
-  [GC cleanup 364M->364M(512M), 0.0005201 secs]  
+      [Full GC (Allocation Failure)  421M->351M(512M), 0.0360324 secs]  
+      [GC pause (G1 Humongous Allocation) (young) (initial-mark) 358M->351M(512M), 0.0009876 secs]  
+      [GC concurrent-root-region-scan-start]  
+      [GC concurrent-root-region-scan-end, 0.0000779 secs]  
+      [GC concurrent-mark-start]  
+      [GC concurrent-mark-end, 0.0011469 secs]  
+      [GC remark, 0.0009199 secs]  
+      [GC cleanup 364M->364M(512M), 0.0005201 secs]  
 应用场景：面向服务端应用，针对具有大内存、多处理器的机器；最主要的应用是为需要低GC延迟，并具有大堆的应用程序提供解决方案；  
 
 ## 垃圾收集器搭配关系图
