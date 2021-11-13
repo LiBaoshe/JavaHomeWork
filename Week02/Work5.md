@@ -10,4 +10,7 @@
 ### Netty sb 压力测试
 ![1636683123(1)](https://user-images.githubusercontent.com/18158758/141396949-f9d2842d-d8e2-49da-82c1-51e15ab5310d.png)  
 
-在并发数 -c 20 执行时间 -N 60 的 sb 压力测试下，性能排序为：Netty > 固定大小的线程池 socket 程序 > 每个线程一个请求的 socket 程序 > 单线程的 socket 程序。
+### 测试结果统计  
+![a9f7f3cb7c55aca05446b1abb360c71](https://user-images.githubusercontent.com/18158758/141647602-7dcc9127-afee-4e7b-bff1-2d6c366c0c68.png)  
+
+在并发数 -c 20 执行时间 -N 60 的 sb 压力测试下，RPS 性能排序为：Netty > 固定大小的线程池 socket 程序 > 每个线程一个请求的 socket 程序 > 单线程的 socket 程序。
