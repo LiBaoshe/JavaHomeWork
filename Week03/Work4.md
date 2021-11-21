@@ -27,3 +27,26 @@ public class RoundRibbonHttpEndpointRouter implements HttpEndpointRouter {
 }
 ```
 
+经过调试发现，两次请求是因为浏览器请求了 favicon.ico 引起的，用命令 curl 测试就不会有问题，所以轮询访问路由策略的代码应该修改为如下：
+
+```java
+/**
+ * RoundRibbon 轮询访问路由策略
+ */
+public class RoundRibbonHttpEndpointRouter implements HttpEndpointRouter {
+
+    private static volatile AtomicInteger count = new AtomicInteger(0);
+
+    @Override
+    public String route(List<String> urls) {
+        int index = count.getAndIncrement();
+        if(index >= urls.size()){
+            index = 0;
+            count.set(0);
+        }
+        return urls.get(index);
+    }
+
+}
+```
+
