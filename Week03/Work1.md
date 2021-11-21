@@ -2,7 +2,7 @@
 
 完整demo地址：https://github.com/LiBaoshe/netty-gateway-demo
 
-demo参考了 老师的例子完成，请求后端服务有多种实现方式（httpclient、okhttp、netty4），所以先在抽象类 OutboundHandler 中定义了一些公共操作：
+demo参考了老师的例子完成，请求后端服务有多种实现方式（httpclient、okhttp、netty4），所以先在抽象类 OutboundHandler 中定义了一些公共操作：
 
 ```java
 /**
