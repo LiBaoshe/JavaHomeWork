@@ -47,7 +47,7 @@ public class Homework03 {
 创建一个新线程调用方法，在主线程中等待 sleep 一会等待线程计算完成。因为基本数据类型的局部变量在匿名内部类中必须是final的（也可以定义全局静态属性来记录），所以可以利用引用类型记录线程中计算的结果，这里使用数组记录，代码如下：
 
 ```java
-	public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
         long start=System.currentTimeMillis();
 
@@ -70,7 +70,7 @@ public class Homework03 {
 方式一中有个明显的缺点，就是线程的执行时间是不确定的，主线程中 sleep 多久是无法提前预知的，可以进一步改进，将记录结果的数组改为带有标记位的引用类型（这里也可以定义全局静态属性标志），主线程中一直监视标志位，如果计算完成则获取计算结果，代码如下：
 
 ```java
-	public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
         long start=System.currentTimeMillis();
 
