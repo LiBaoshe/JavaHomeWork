@@ -2,7 +2,7 @@
 
 #### Thread/Object
 
-thread 执行完成后会调用自己的 notifyAlll()方法，join会结束。
+thread 执行完成后会调用自己的 notifyAlll()方法，join会结束。join 方法内部调用了thread对象的 wait 方法。
 
 #### synchronized
 
