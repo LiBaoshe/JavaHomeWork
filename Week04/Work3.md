@@ -1,5 +1,15 @@
 ### 3.（选做）列举常用的并发操作 API 和工具类，简单分析其使用场景和优缺点。
 
+### 偏向锁、轻量级锁、重量级锁
+
+| 锁       | 优点                                       | 缺点                                          | 适用场景                           |
+| -------- | ------------------------------------------ | --------------------------------------------- | ---------------------------------- |
+| 偏向锁   | 加锁解锁不需要额外的消耗                   | 如果线程间存在竞争，会带来额外的锁撤销的消耗  | 适用于只有一个线程访问同步块的场景 |
+| 轻量级锁 | 竞争的线程不会阻塞，提高了程序的响应速度。 | 如果始终得不到锁竞争的线程，使用自选会消耗CPU | 追求响应时间，同步块执行速度非常快 |
+| 重量级锁 | 线程竞争不使用自选，不会消耗CPU            | 线程阻塞，响应时间缓慢                        | 追求吞吐量，同步块执行速度较长     |
+
+参考：《Java并发编程的艺术》
+
 ### synchronized 和 ReentrantLock
 
 synchronized是java关键字，隐式获取和释放锁，ReentrantLock 是Java API 提供的，需要显示获取和释放锁。
@@ -55,9 +65,29 @@ offer(e, time, unit) 和 poll(time, unit) 设定了等待时间会阻塞，如�
 
 ConcurrentHashMap、CopyOnWriteArrayList、CopyOnWriteArraySet。
 
-### 原子类
+### 原子操作
 
-多线程下需要保证原子性操作时，应该使用java.util.concurrent.atomic包里原子类，AtomicInteger，AtomicBoolean等，通过AtomicReference<V>将一个对象的所有操作都转化为原子操作。
+原子（atomic）本意是“不能被进一步分割的最小粒子”，而原子操作（atomic operation）意为“不可被中断的一个或一系列操作”。
+
+Java中可以通过锁和循环CAS的方式来实现原子操作。JVM中的CAS操作正是利用了处理器提供的CMPXCHG指令
+
+JDK1.5 java.util.concurrent.atomic包里提供了一些原子类，AtomicInteger，AtomicBoolean 等，在并发场景中需要保证原子操作可以考虑使用原子类。
+
+JDK8中新增了LongAdder、DoubleAdder、LongAccumulator、DoubleAccumulator 四个原子类，内部采用了分段的思想，将数据分为 Cell[] cells 数组，分段进行原子操作，最后累加到一起得到最终结果。
+
+#### CAS实现原子操作的三大问题
+
+- **ABA问题**
+
+如果一个值原来是A，变成了B，又变成了A，那么使用CAS进行检查时会发现它 的值没有发生变化，但是实际上却变化了。ABA问题的解决思路就是使用版本号。在变量前面 追加上版本号，每次变量更新的时候把版本号加1，那么A→B→A就会变成1A→2B→3A。从 Java 1.5开始，JDK的Atomic包里提供了一个类AtomicStampedReference<V>来解决ABA问题。
+
+- **循环时间长开销大**
+
+自旋CAS如果长时间不成功，会给CPU带来非常大的执行开销。
+
+- **只能保证一个共享变量的原子操作**
+
+对多个共享变量操作时，循环CAS就无法保证操作的原子 性，这个时候就可以用锁。从Java 1.5开始， JDK提供了AtomicReference<V>类来保证引用对象之间的原子性，就可以把多个变量放在一个对象里来进行CAS操作。通过AtomicReference<V>将一个对象的所有操作都转化为原子操作。
 
 JDK8中新增了LongAdder、DoubleAdder、LongAccumulator、DoubleAccumulator 四个原子类，内部采用了分段的思想，将数据分为 Cell[] cells 数组，分段进行原子操作，最后累加到一起得到最终结果。
 
