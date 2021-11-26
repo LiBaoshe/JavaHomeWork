@@ -89,8 +89,6 @@ JDK8中新增了LongAdder、DoubleAdder、LongAccumulator、DoubleAccumulator �
 
 对多个共享变量操作时，循环CAS就无法保证操作的原子 性，这个时候就可以用锁。从Java 1.5开始， JDK提供了AtomicReference<V>类来保证引用对象之间的原子性，就可以把多个变量放在一个对象里来进行CAS操作。通过AtomicReference<V>将一个对象的所有操作都转化为原子操作。
 
-JDK8中新增了LongAdder、DoubleAdder、LongAccumulator、DoubleAccumulator 四个原子类，内部采用了分段的思想，将数据分为 Cell[] cells 数组，分段进行原子操作，最后累加到一起得到最终结果。
-
 ### 线程池
 
 线程池常用类/接口：Executor、ExecutorService、Executors、ThreadPoolExecutor。
