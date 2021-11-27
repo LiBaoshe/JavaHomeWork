@@ -97,7 +97,7 @@ public class Homework03 {
 
 #### 方式3：Thread.yield() + Thread.activeCount()
 
-方式二中需要定义额外的标志位判断，如果不用标志位，可以根据当前线程数判断是否计算完成，main方法运行时，JVM中至少会有两个线程：main 线程 和 GC守护线程，所以只要判断当前线程数是否为 2 即可，代码如下：
+方式二中需要定义额外的标志位判断，如果不用标志位，可以根据当前线程数判断是否计算完成，在Idea环境中，main方法运行时，JVM中至少会有两个活动线程：main 线程 和 Idea 线程（Thread[Monitor Ctrl-Break,5,main]），所以可以判断当前活动线程数是否为 2 即可，代码如下：
 
 ```java
     public static void main(String[] args) throws Exception {
