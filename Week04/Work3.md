@@ -1,5 +1,35 @@
 ### 3.（选做）列举常用的并发操作 API 和工具类，简单分析其使用场景和优缺点。
 
+### wait/notify/notifyAll
+
+- 使用wait()/notify()/notifyAll()时需要先对调用对象加锁。
+
+- 调用wait()方法后，线程由RUNNIGN变为WAITIGN，并将线程放置到对象的等待队列。
+
+- notify()或notifyAll()方法调用后，等待线程依旧不会从wait()返回，需要调用notify()或notifyAll()的线程释放锁之后，等待线程才有机会从wait()返回。
+
+- notify()方法将等待队列中的一个等待线程从等待队列中移到同步队列，而notifyAll()方法则是将等待队列中所有的线程全部移到同步队列，被移动的线程状态由WAINTING变为BLOCKED。
+
+- 从wait()方法返回的前提是获得了调用对象的锁。
+
+- 经典范式：
+
+  ```java
+  // 等待方：
+  synchronized(对象){
+      while(条件不满足){
+          对象.wait();
+      }
+      // 对应的处理逻辑
+  }
+  
+  // 通知方：
+  synchronized(对象){
+      改变条件
+      对象.notify()/notifyAll()
+  }
+  ```
+
 ### 偏向锁、轻量级锁、重量级锁
 
 | 锁       | 优点                                       | 缺点                                          | 适用场景                           |
