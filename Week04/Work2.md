@@ -446,7 +446,7 @@ CountDownLatch是通过一个计数器来实现的，计数器的初始化值为
 
 Semaphore 通常我们叫它信号量， 可以用来控制同时访问特定资源的线程数量，通过协调各个线程，以保证合理的使用资源。
 
-这里为了确保先让子线程获得 semaphore.acquire()，主线程中暂停了1纳秒，代码如下：
+代码如下：
 
 ```java
     static int sum = 0; // 全局静态属性记录计算结果
@@ -455,24 +455,16 @@ Semaphore 通常我们叫它信号量， 可以用来控制同时访问特定资
 
         long start=System.currentTimeMillis();
 
-        Semaphore semaphore = new Semaphore(1);
+        Semaphore semaphore = new Semaphore(0);
+
         new Thread(() -> {
-            try {
-                semaphore.acquire();
-                sum = sum();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                semaphore.release();
-            }
+            sum = sum();
+            semaphore.release();
         }).start();
-        // 确保  拿到result 并输出
-        // 主线程暂停 1 纳秒，确保子线程先获得 semaphore.acquire()
-        TimeUnit.NANOSECONDS.sleep(1); 
+        // 确保  拿到 result 并输出
         semaphore.acquire();
         int result = sum;
-        semaphore.release();
-        
+
         System.out.println("异步计算结果为："+result);
         System.out.println("使用时间："+ (System.currentTimeMillis()-start) + " ms");
     }
@@ -515,5 +507,4 @@ SynchronousQueue 也是一个队列来的，但它的特别之处在于它内部
         System.out.println("使用时间："+ (System.currentTimeMillis()-start) + " ms");
     }
 ```
-
 
