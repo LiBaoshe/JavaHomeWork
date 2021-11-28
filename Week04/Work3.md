@@ -59,11 +59,13 @@ Lock 可响应中断、可轮询、可创建定时锁，比 synchronized 更加�
 
 ### CountDownLatch、CyclicBarrier、Semphore
 
-| CountDownLatch                                               | CyclicBarrier                                  | Semphore                                     |
-| ------------------------------------------------------------ | ---------------------------------------------- | -------------------------------------------- |
-| 一个或多个线程一起等待**其它**线程的操作执行完成后再执行相关操作。 | 一组线程等待至某个状态之后再**全部同时**执行。 | 信号量，用于控制同时访问某些资源的线程个数。 |
-| 不可重用                                                     | 可以重用                                       | 与锁功能类似，申请到许可才能执行线程任务。   |
-| await()/countDown()                                          | await()/reset()                                | acquire()/release()                          |
+| CountDownLatch                                               | CyclicBarrier                                                | Semphore                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------ |
+| 一个或多个线程一起等待**其它**线程的操作执行完成后再执行相关操作。 | 一组线程等待至某个状态之后再**全部同时**执行。               | 信号量，用于控制同时访问某些资源的线程个数。     |
+| 不可重用                                                     | 可以重用                                                     | 与锁功能类似，申请到许可才能执行线程任务。       |
+| await()/countDown()                                          | await()/reset()                                              | acquire()/release()                              |
+| CountDownLatch(count)                                        | CyclicBarrier(parties)<br />CyclicBarrier(parties, barrierAction) | Semaphore(permits)<br />Semaphore(permits, fair) |
+| count ≥ 0                                                    | parties ＞ 0                                                 | permits 可以是 正、负、零                        |
 
 CountDownLatch 和 CyclicBarrier 都是用于实现多线程之间的互相等待，但二者的关注点不同，CountDownLatch 主要用于主线程等待其它子线程任务均执行完成后再执行接下来的逻辑，而 CyclicBarrier 主要用于一组互相等待的线程大家都到某个状态后，再同时执行各自接下来的逻辑。
 
@@ -88,6 +90,14 @@ offer(e, time, unit) 和 poll(time, unit) 设定了等待时间会阻塞，如�
 - ### put()/take()
 
 都是阻塞方法，队列已满时 put(e) 将会阻塞，直到队列中有可用的空间，队列空时 take() 将会阻塞，直到队列中有新的元素加入。
+
+插入和移除操作的4种处理方式如下表：
+
+| 方法/处理方式 | 抛出异常  | 返回特殊值 | 一直阻塞 | 超时退出             |
+| ------------- | --------- | ---------- | -------- | -------------------- |
+| 插入方法      | add(e)    | offer(e)   | put(e)   | offer(e, time, unit) |
+| 移除方法      | remove()  | poll()     | take()   | poll(time, unit)     |
+| 检查方法      | element() | peek()     | 不可用   | 不可用               |
 
 ### 并发集合
 
