@@ -307,6 +307,41 @@ Java 1.8 提供的 CompletableFuture 实现了CompletionStage接口和Future接�
 方法 8 中的 wait/notify 方式有个缺点是不能保证 wait 和 notify 调用的先后顺序，如果 wait 执行比 notify 延后，则主线程会一直等。使用 Java 并发包（JUC）的 Lock 与 Condition 的 await/signal 机制可以做到精确唤醒，代码如下：
 
 ```java
+    static final Lock lock = new ReentrantLock(); // 定义锁
+    static final Condition condition = lock.newCondition(); // Condition
+
+    public static void main(String[] args) throws Exception {
+
+        long start=System.currentTimeMillis();
+
+        int[] nums = new int[1];
+        new Thread(() -> {
+            lock.lock();
+            try {
+                nums[0] = sum();
+                condition.signal(); // 通知主线程可以获取值了
+            } finally {
+                lock.unlock();
+            }
+        }).start();
+
+        lock.lock();
+        try {
+            // 确保  拿到result 并输出
+            condition.await();
+            int result = nums[0];
+
+            System.out.println("异步计算结果为："+result);
+            System.out.println("使用时间："+ (System.currentTimeMillis()-start) + " ms");
+        } finally {
+            lock.unlock();
+        }
+    }
+```
+
+更加完善的 Lock/Condition 实现：
+
+```java
     static boolean calcFinish; // 计算标记
     static final Lock lock = new ReentrantLock(); // 定义锁
     static final Condition subC = lock.newCondition(); // 子线程 Condition
