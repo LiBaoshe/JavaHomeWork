@@ -246,6 +246,33 @@ thread 线程结束后会调用自己的 notifyAll()方法，所以可以将 thr
     }
 ```
 
+以上方法无法保证主线程和子线程谁先获取到锁，为了保证让子线程先获取锁，可以在主线程获取到锁后再启动子线程：
+
+```java
+    public static void main(String[] args) throws Exception {
+
+        long start=System.currentTimeMillis();
+
+        int[] nums = new int[1]; // 利用数组记录线程的计算结果
+        Thread thread = new Thread(() -> {
+            synchronized (nums){
+                nums[0] = sum();
+                nums.notifyAll();
+            }
+        });
+        
+        // 确保  拿到result 并输出
+        synchronized (nums){
+            thread.start();
+            nums.wait();
+        }
+        int result = nums[0]; //这是得到的返回值
+
+        System.out.println("异步计算结果为："+result);
+        System.out.println("使用时间："+ (System.currentTimeMillis()-start) + " ms");
+    }
+```
+
 #### 方法9：Callable<V> + Thread
 
 使用 Callable<V> 创建带返回值的异步任务，通过实现了 Runnable 和  Future<V> 的子接口（ RunnableFuture <V> 、RunnableScheduledFuture <V> 等）或实现类（FutureTask 等）开启异步任务，这里使用FutureTask 实现，代码如下：
@@ -537,6 +564,36 @@ SynchronousQueue 也是一个队列来的，但它的特别之处在于它内部
 
         // 确保  拿到result 并输出
         int result = blockingQueue.take();
+
+        System.out.println("异步计算结果为："+result);
+        System.out.println("使用时间："+ (System.currentTimeMillis()-start) + " ms");
+    }
+```
+
+#### 方法18：线程间交换数据的 Exchanger
+
+Exchanger（交换者）是一个用于线程间协作的工具类。Exchanger用于进行线程间的数据交 换。它提供一个同步点，在这个同步点，两个线程可以交换彼此的数据。这两个线程通过 exchange方法交换数据，如果第一个线程先执行exchange()方法，它会一直等待第二个线程也 执行exchange方法，当两个线程都到达同步点时，这两个线程就可以交换数据，将本线程生产 出来的数据传递给对方。
+
+实现代码：
+
+```java
+    public static void main(String[] args) throws Exception {
+
+        long start=System.currentTimeMillis();
+        Exchanger<Integer> exchanger = new Exchanger<>();
+
+        Thread thread = new Thread(() -> {
+            try {
+                Integer exchange = exchanger.exchange(sum());
+                System.out.println("主线程传给子线程的值：" + exchange);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+        
+        // 确保  拿到result 并输出
+        int result = exchanger.exchange(0); //这是得到的返回值
 
         System.out.println("异步计算结果为："+result);
         System.out.println("使用时间："+ (System.currentTimeMillis()-start) + " ms");
