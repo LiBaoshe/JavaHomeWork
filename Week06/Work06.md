@@ -10,8 +10,16 @@
 
 ### DDL SQL 语句
 
+创建数据库：
+
 ```mysql
-CREATE TABLE `t_goods`  (
+CREATE DATABASE IF NOT EXISTS db_mall DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;
+```
+
+创建表：
+
+```mysql
+CREATE TABLE IF NOT EXISTS `t_goods`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '编码',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '名称',
   `type` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '分类',
@@ -21,7 +29,7 @@ CREATE TABLE `t_goods`  (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `t_order`  (
+CREATE TABLE IF NOT EXISTS `t_order`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '订单ID',
   `user_id` int NOT NULL COMMENT '用户ID',
   `total_price` decimal(18, 2) NULL COMMENT '总金额',
@@ -30,7 +38,7 @@ CREATE TABLE `t_order`  (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `t_order_goods`  (
+CREATE TABLE IF NOT EXISTS `t_order_goods`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `order_id` int NOT NULL COMMENT '订单ID',
   `goods_id` int NOT NULL COMMENT '商品ID',
@@ -40,7 +48,7 @@ CREATE TABLE `t_order_goods`  (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `t_user`  (
+CREATE TABLE IF NOT EXISTS `t_user`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '用户名',
   `password` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '密码',
@@ -52,5 +60,13 @@ CREATE TABLE `t_user`  (
 ALTER TABLE `t_order` ADD CONSTRAINT `fk_user_order` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`);
 ALTER TABLE `t_order_goods` ADD CONSTRAINT `fk_order` FOREIGN KEY (`order_id`) REFERENCES `t_order` (`id`);
 ALTER TABLE `t_order_goods` ADD CONSTRAINT `fk_goods` FOREIGN KEY (`goods_id`) REFERENCES `t_goods` (`id`);
+```
+
+删除外键：
+
+```mysql
+ALTER TABLE `t_order` DROP FOREIGN KEY `fk_user_order`;
+ALTER TABLE `t_order_goods` DROP FOREIGN KEY `fk_order`;
+ALTER TABLE `t_order_goods` DROP FOREIGN KEY `fk_goods`;
 ```
 
