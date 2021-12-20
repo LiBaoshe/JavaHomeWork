@@ -1,5 +1,7 @@
 # 2.（必做）按自己设计的表结构，插入 100 万订单模拟数据，测试不同方式的插入效率
 
+完整测试代码：https://github.com/LiBaoshe/simple-mall 中的 order 模块。
+
 ## 测试环境
 
 - MySql 8.0.23（安装在虚拟机VMWare中，分配内存2G，处理器2，内核2，硬盘100G）
@@ -355,3 +357,8 @@ maximum-pool-size: 100
 可以看出单线程单条插入100万订单数据最慢，约要20分钟。多线程批量插入，批量数为100~10000时，时间比较优，差不多都在 35 秒左右。
 
 将 mysql 虚拟机配置从 4核2G 增加打 8核8G，多线程批量插入可以到25秒左右。
+
+## 补充问题
+
+通过学习群里讨论，还可以使用 load data 命令、Java8 Stream parallel 切割数据 、JDBC参数rewriteBatchedStatements、各种 log 都设置成不立即落盘、MySQL Shell import_table 数据导入 等优化方式，可以优化到10秒之内，看大佬们讨论，收获颇多，有空再按这些方向优化。
+
