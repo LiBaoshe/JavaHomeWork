@@ -1,6 +1,6 @@
 # 6.（必做）基于 hmily TCC 或 ShardingSphere 的 Atomikos XA 实现一个简单的分布式事务应用 demo（二选一），提交到 Github。
 
-## hmily TCC
+## hmily
 
 GitHub：https://github.com/dromara/hmily
 
@@ -21,6 +21,26 @@ Hmily是一款高性能，零侵入，金融级分布式事务解决方案，目
   `TAC`模式其实是`TCC`模式的变种,顾名思义 `TAC` 模式被称为自动回滚,相比于 `TCC`模式，用户完全不用关心 回滚方法如何去写，减少了用户的开发量，对用户完全透明。
 
   `TAC` 模式会拦截用户的SQL语句生成反向回滚SQL，SQL的兼容度也会是一大考验。
+
+### Spring Boot 使用 hmily TCC
+
+创建 hmily 数据库
+
+```sql
+CREATE DATABASE  IF NOT EXISTS  `hmily`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+引入 maven 依赖
+
+```yaml
+<dependency>
+    <groupId>org.dromara</groupId>
+    <artifactId>hmily-spring-boot-starter-dubbo</artifactId>
+    <version>2.1.1</version>
+</dependency>
+```
+
+创建配置文件 hmily.yml
 
 
 
